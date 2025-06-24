@@ -4,7 +4,6 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
-#include "stdafx.h"
 #include "mbf16c.h"
 #include "time_ms.h"
 #include "rnd.h"
