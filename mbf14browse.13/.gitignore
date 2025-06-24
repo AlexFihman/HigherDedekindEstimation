@@ -1,0 +1,53 @@
+# Compiled object files
+*.o
+*.obj
+
+# Compiled binary files
+*.exe
+*.out
+*.app
+*.a
+*.so
+*.dll
+*.dylib
+mbf14browse
+
+# CMake and Make files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Build directories
+/build/
+/bin/
+/debug/
+/release/
+
+# Editor/IDE files
+*.swp
+*.swo
+*~
+*.bak
+
+# VSCode settings
+.vscode/
+
+# CLion / JetBrains IDEs
+.idea/
+
+# Logs and profiling
+*.log
+*.perf
+*.prof
+
+# Generated files (like mbf.*.txt output)
+mbf.*.txt
+
+# Core dumps
+core
+core.*
+
+# Other OS-specific
+.DS_Store
+Thumbs.db

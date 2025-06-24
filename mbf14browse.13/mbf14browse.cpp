@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 
     for (uint64_t i = 0; i < iter; i++) {
       m->Browse(MinVal, MaxVal);
-      pval[m->CntWhite] += m->p;
+      pval[m->Weight] += m->p;
     }
 
     for (int i = MinVal; i <= MaxVal; i++) {

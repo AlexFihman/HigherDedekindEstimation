@@ -21,7 +21,6 @@
 
 #define ties(i, j) (i ^ (0x1u << j))
 
-// constants
 class mbf16 {
  public:
   int LevelOfItem[d1];
@@ -33,7 +32,7 @@ class mbf16 {
   int MainArrayU[d1];
   int MainArrayL[d1];
 
-  int CntWhite;
+  int Weight;
   int LowerCnt;
   int UpperCnt;
   int LevelUpDepth;

@@ -42,11 +42,11 @@ mbf16::mbf16() {
 void mbf16::ChangeItem(int Item) {
   if (MainArray[Item] = !MainArray[Item]) {
     Level[LevelOfItem[Item]]++;
-    CntWhite++;
+    Weight++;
     FastMakeListOfGreys(Item, true);
   } else {
     Level[LevelOfItem[Item]]--;
-    CntWhite--;
+    Weight--;
     FastMakeListOfGreys(Item, false);
   }
 }
@@ -55,11 +55,11 @@ void mbf16::Browse(int MinVal, int MaxVal) {
   int GreyCnt;
   int ToChange;
 
-  if (CntWhite == MinVal) {
+  if (Weight == MinVal) {
     ToChange = BlackList->RandItem();
     GreyCnt = BlackList->Count;
   } else {
-    if (CntWhite == MaxVal) {
+    if (Weight == MaxVal) {
       ToChange = WhiteList->RandItem();
       GreyCnt = WhiteList->Count;
     } else {
@@ -75,9 +75,9 @@ void mbf16::Browse(int MinVal, int MaxVal) {
 
   ChangeItem(ToChange);
 
-  if (CntWhite == MinVal) {
+  if (Weight == MinVal) {
     GreyCnt = BlackList->Count;
-  } else if (CntWhite == MaxVal) {
+  } else if (Weight == MaxVal) {
     GreyCnt = WhiteList->Count;
   } else {
     GreyCnt = BlackList->Count + WhiteList->Count;
@@ -87,12 +87,12 @@ void mbf16::Browse(int MinVal, int MaxVal) {
 }
 
 void mbf16::Prepare(int MinVal, int MaxVal) {
-  while (CntWhite < MinVal) {
+  while (Weight < MinVal) {
     int it = BlackList->RandItem();
     ChangeItem(it);
   };
 
-  while (CntWhite > MaxVal) {
+  while (Weight > MaxVal) {
     int it = WhiteList->RandItem();
     ChangeItem(it);
   };
@@ -102,7 +102,7 @@ void mbf16::MakeListOfGreys() {
   WhiteList->Clear();
   BlackList->Clear();
   BlackList->Add(d1 - 1);
-  CntWhite = 0;
+  Weight = 0;
 }
 
 void mbf16::FastMakeListOfGreys(int Item, bool wh) {
