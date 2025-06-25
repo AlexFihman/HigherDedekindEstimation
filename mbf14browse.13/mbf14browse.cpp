@@ -32,9 +32,13 @@ int main(int argc, char *argv[]) {
   outfile << scientific;
   outfile.precision(10);
 
-  double pval[d1 + 1];
+  double pvalL[d1 + 1];
+  double pvalR[d1 + 1];
+  double pvalS[d1 + 1];
   for (int i = 0; i < (d1 + 1); i++) {
-    pval[i] = 0;
+    pvalL[i] = 0;
+    pvalR[i] = 0;
+    pvalS[i] = 0;
   }
 
   t1 = TimeMillis();
@@ -46,15 +50,19 @@ int main(int argc, char *argv[]) {
 
     for (uint64_t i = 0; i < iter; i++) {
       m->Browse(MinWeight, MaxWeight);
-      pval[m->Weight] += m->p;
+      pvalL[m->Weight] += m->MinTP->Count * m->p;
+      pvalR[m->Weight] += m->MinFP->Count * m->p;
+      pvalS[m->Weight] += m->p;
     }
 
     for (int i = MinWeight; i <= MaxWeight; i++) {
-      outfile << cycle << "\t" << i << "\t" << pval[i] << "\n";
+      outfile << cycle << "\t" << i << "\t" << pvalL[i] << "\t" << pvalR[i] << "\t" << pvalS[i] << "\t" << "\n";
     }
 
     for (int i = 0; i < (d1 + 1); i++) {
-      pval[i] = 0;
+      pvalR[i] = 0;
+      pvalL[i] = 0;
+      pvalS[i] = 0;
     }
     outfile.flush();
   }
