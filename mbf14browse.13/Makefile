@@ -1,16 +1,31 @@
-mbf14browse: mbf14browse.o fastlist.o mbf16c.o time_ms.o SFMT.o rnd.o
-	g++ -O3 -DSFMT_MEXP=19937 mbf14browse.o fastlist.o mbf16c.o time_ms.o SFMT.o rnd.o -o mbf14browse
-mbf14browse.o:
-	g++ -c -O3 -DSFMT_MEXP=19937 mbf14browse.cpp
-fastlist.o: 
-	g++ -c -O3 -DSFMT_MEXP=19937 fastlist.cpp
-mbf16c.o: 
-	g++ -c -O3 -DSFMT_MEXP=19937 mbf16c.cpp
-time_ms.o:
-	g++ -c -O3 -DSFMT_MEXP=19937 time_ms.cpp
-SFMT.o:
-	gcc -c -O3 -DSFMT_MEXP=19937 SFMT.c
-rnd.o:
-	g++ -c -DSFMT_MEXP=19937 rnd.cpp
+# Compiler and flags
+CXX := g++
+CC  := gcc
+CXXFLAGS := -O3 -DSFMT_MEXP=19937
+CFLAGS   := -O3 -DSFMT_MEXP=19937
+
+# Sources and objects
+CXX_SRCS := mbf14browse.cpp fastlist.cpp mbf16c.cpp time_ms.cpp rnd.cpp
+C_SRCS   := SFMT.c
+
+CXX_OBJS := $(CXX_SRCS:.cpp=.o)
+C_OBJS   := $(C_SRCS:.c=.o)
+OBJS     := $(CXX_OBJS) $(C_OBJS)
+
+# Target
+TARGET := mbf14browse
+
+# Default target
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(TARGET)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
-	rm -rf *.o mbf14browse
+	rm -f $(OBJS) $(TARGET)
