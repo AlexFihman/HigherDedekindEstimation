@@ -11,7 +11,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
   if (argc < 4) {
-    cerr << "Usage: " << argv[0] << " <iterations> <MinVal> <MaxVal>\n";
+    cerr << "Usage: " << argv[0] << " <iterations> <MinWeight> <MaxWeight>\n";
     return 1;
   }
 
@@ -19,10 +19,10 @@ int main(int argc, char *argv[]) {
   sfmt_init();
   int64_t iter = std::strtoull(argv[1], nullptr, 10);
   mbf16 *m = new mbf16();
-  int MinVal = atoi(argv[2]);
-  int MaxVal = atoi(argv[3]);
-  cout << "minval: " << MinVal << endl;
-  cout << "MaxVal: " << MaxVal << endl;
+  int MinWeight = atoi(argv[2]);
+  int MaxWeight = atoi(argv[3]);
+  cout << "MinWeight: " << MinWeight << endl;
+  cout << "MaxWeight: " << MaxWeight << endl;
 
   ofstream outfile;
   string s = "mbf.";
@@ -40,16 +40,16 @@ int main(int argc, char *argv[]) {
   t1 = TimeMillis();
   for (int cycle = 0; cycle < 30; cycle++) {
     cout << "cycle: " << cycle << endl;
-    m->Prepare(MinVal, MaxVal);
+    m->Prepare(MinWeight, MaxWeight);
 
-    for (int i = 0; i < 10000; i++) m->Browse(MinVal, MaxVal);
+    for (int i = 0; i < 10000; i++) m->Browse(MinWeight, MaxWeight);
 
     for (uint64_t i = 0; i < iter; i++) {
-      m->Browse(MinVal, MaxVal);
+      m->Browse(MinWeight, MaxWeight);
       pval[m->Weight] += m->p;
     }
 
-    for (int i = MinVal; i <= MaxVal; i++) {
+    for (int i = MinWeight; i <= MaxWeight; i++) {
       outfile << cycle << "\t" << i << "\t" << pval[i] << "\n";
     }
 

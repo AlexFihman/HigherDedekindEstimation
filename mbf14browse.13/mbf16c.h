@@ -36,7 +36,6 @@ class mbf16 {
   int LowerCnt;
   int UpperCnt;
   int LevelUpDepth;
-  int MinVal, MaxVal;
   double p;
 
   TFastList* MinTP; //minimal true point
@@ -45,7 +44,7 @@ class mbf16 {
   mbf16();
   ~mbf16();
 
-  void Browse(int MinVal, int MaxVal);
+  void Browse(int MinWeight, int MaxWeight);
   void ChangeItem(int Item);
   void MakeListOfGreys();
   void RefreshMinPoints(int Item, bool wh);
