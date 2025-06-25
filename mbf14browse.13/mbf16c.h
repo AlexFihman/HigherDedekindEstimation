@@ -48,7 +48,7 @@ class mbf16 {
   void Browse(int MinVal, int MaxVal);
   void ChangeItem(int Item);
   void MakeListOfGreys();
-  void FastMakeListOfGreys(int Item, bool wh);
+  void RefreshMinPoints(int Item, bool wh);
   void Prepare(int MinVal, int MaxVal);
   int LevelTop();
   int LevelBottom();

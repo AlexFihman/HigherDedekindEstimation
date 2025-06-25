@@ -40,11 +40,11 @@ void mbf16::ChangeItem(int Item) {
   if (MainArray[Item] = !MainArray[Item]) {
     Level[LevelOfItem[Item]]++;
     Weight++;
-    FastMakeListOfGreys(Item, true);
+    RefreshMinPoints(Item, true);
   } else {
     Level[LevelOfItem[Item]]--;
     Weight--;
-    FastMakeListOfGreys(Item, false);
+    RefreshMinPoints(Item, false);
   }
 }
 
@@ -102,7 +102,7 @@ void mbf16::MakeListOfGreys() {
   Weight = 0;
 }
 
-void mbf16::FastMakeListOfGreys(int Item, bool wh) {
+void mbf16::RefreshMinPoints(int Item, bool wh) {
   if (wh) {
     MinFP->Delete(Item);
     MinTP->Add(Item);
