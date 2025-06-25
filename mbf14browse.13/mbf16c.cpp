@@ -21,7 +21,7 @@ mbf16::mbf16() {
   }
 
   for (i = 0; i < d1; i++) {
-    MainArray[i] = false;
+    truthTable[i] = false;
     MainArrayU[i] = d3 - LevelOfItem[i];
     MainArrayL[i] = 0;
     LinkCnt[i] = 0;
@@ -36,8 +36,8 @@ mbf16::mbf16() {
   }
 }
 
-void mbf16::ChangeItem(int Item) {
-  if (MainArray[Item] = !MainArray[Item]) {
+void mbf16::FlipValueAt(int Item) {
+  if (truthTable[Item] = !truthTable[Item]) {
     Level[LevelOfItem[Item]]++;
     Weight++;
     RefreshMinPoints(Item, true);
@@ -48,15 +48,15 @@ void mbf16::ChangeItem(int Item) {
   }
 }
 
-void mbf16::Browse(int MinVal, int MaxVal) {
+void mbf16::Browse(int MinWeight, int MaxWeight) {
   int GreyCnt;
   int ToChange;
 
-  if (Weight == MinVal) {
+  if (Weight == MinWeight) {
     ToChange = MinFP->RandItem();
     GreyCnt = MinFP->Count;
   } else {
-    if (Weight == MaxVal) {
+    if (Weight == MaxWeight) {
       ToChange = MinTP->RandItem();
       GreyCnt = MinTP->Count;
     } else {
@@ -70,11 +70,11 @@ void mbf16::Browse(int MinVal, int MaxVal) {
     }
   };
 
-  ChangeItem(ToChange);
+  FlipValueAt(ToChange);
 
-  if (Weight == MinVal) {
+  if (Weight == MinWeight) {
     GreyCnt = MinFP->Count;
-  } else if (Weight == MaxVal) {
+  } else if (Weight == MaxWeight) {
     GreyCnt = MinTP->Count;
   } else {
     GreyCnt = MinFP->Count + MinTP->Count;
@@ -83,15 +83,15 @@ void mbf16::Browse(int MinVal, int MaxVal) {
   p = 1.0 / GreyCnt;
 }
 
-void mbf16::Prepare(int MinVal, int MaxVal) {
-  while (Weight < MinVal) {
+void mbf16::Prepare(int MinWeight, int MaxWeight) {
+  while (Weight < MinWeight) {
     int it = MinFP->RandItem();
-    ChangeItem(it);
+    FlipValueAt(it);
   };
 
-  while (Weight > MaxVal) {
+  while (Weight > MaxWeight) {
     int it = MinTP->RandItem();
-    ChangeItem(it);
+    FlipValueAt(it);
   };
 }
 

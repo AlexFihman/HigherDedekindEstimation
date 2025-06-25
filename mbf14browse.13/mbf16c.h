@@ -28,14 +28,11 @@ class mbf16 {
   int Level[d3 + 1];
   int LinkCnt[d1];
   int levellist[d3 + 1][d1];
-  bool MainArray[d1];
+  bool truthTable[d1];
   int MainArrayU[d1];
   int MainArrayL[d1];
 
   int Weight;
-  int LowerCnt;
-  int UpperCnt;
-  int LevelUpDepth;
   double p;
 
   TFastList* MinTP; //minimal true point
@@ -45,7 +42,7 @@ class mbf16 {
   ~mbf16();
 
   void Browse(int MinWeight, int MaxWeight);
-  void ChangeItem(int Item);
+  void FlipValueAt(int Item);
   void MakeListOfGreys();
   void RefreshMinPoints(int Item, bool wh);
   void Prepare(int MinVal, int MaxVal);
