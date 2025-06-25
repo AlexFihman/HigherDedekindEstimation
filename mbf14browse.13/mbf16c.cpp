@@ -1,7 +1,4 @@
-#ifndef _mbf16cH_
 #include "mbf16c.h"
-#define _mbf16cH_
-#endif
 #include "rnd.h"
 
 mbf16::mbf16() {
@@ -30,8 +27,8 @@ mbf16::mbf16() {
     LinkCnt[i] = 0;
   }
 
-  BlackList = new TFastList;
-  WhiteList = new TFastList;
+  MinTP = new TFastList;
+  MinFP = new TFastList;
   MakeListOfGreys();
 
   for (i = 0; i < d3 + 1; i++) {
@@ -56,19 +53,19 @@ void mbf16::Browse(int MinVal, int MaxVal) {
   int ToChange;
 
   if (Weight == MinVal) {
-    ToChange = BlackList->RandItem();
-    GreyCnt = BlackList->Count;
+    ToChange = MinFP->RandItem();
+    GreyCnt = MinFP->Count;
   } else {
     if (Weight == MaxVal) {
-      ToChange = WhiteList->RandItem();
-      GreyCnt = WhiteList->Count;
+      ToChange = MinTP->RandItem();
+      GreyCnt = MinTP->Count;
     } else {
-      GreyCnt = WhiteList->Count + BlackList->Count;
+      GreyCnt = MinTP->Count + MinFP->Count;
       int Item = sfmt_genrand_uint32(mt) % GreyCnt;
-      if (Item < WhiteList->Count) {
-        ToChange = WhiteList->Items[Item];
+      if (Item < MinTP->Count) {
+        ToChange = MinTP->Items[Item];
       } else {
-        ToChange = BlackList->Items[Item - WhiteList->Count];
+        ToChange = MinFP->Items[Item - MinTP->Count];
       };
     }
   };
@@ -76,11 +73,11 @@ void mbf16::Browse(int MinVal, int MaxVal) {
   ChangeItem(ToChange);
 
   if (Weight == MinVal) {
-    GreyCnt = BlackList->Count;
+    GreyCnt = MinFP->Count;
   } else if (Weight == MaxVal) {
-    GreyCnt = WhiteList->Count;
+    GreyCnt = MinTP->Count;
   } else {
-    GreyCnt = BlackList->Count + WhiteList->Count;
+    GreyCnt = MinFP->Count + MinTP->Count;
   }
 
   p = 1.0 / GreyCnt;
@@ -88,52 +85,52 @@ void mbf16::Browse(int MinVal, int MaxVal) {
 
 void mbf16::Prepare(int MinVal, int MaxVal) {
   while (Weight < MinVal) {
-    int it = BlackList->RandItem();
+    int it = MinFP->RandItem();
     ChangeItem(it);
   };
 
   while (Weight > MaxVal) {
-    int it = WhiteList->RandItem();
+    int it = MinTP->RandItem();
     ChangeItem(it);
   };
 }
 
 void mbf16::MakeListOfGreys() {
-  WhiteList->Clear();
-  BlackList->Clear();
-  BlackList->Add(d1 - 1);
+  MinTP->Clear();
+  MinFP->Clear();
+  MinFP->Add(d1 - 1);
   Weight = 0;
 }
 
 void mbf16::FastMakeListOfGreys(int Item, bool wh) {
   if (wh) {
-    BlackList->Delete(Item);
-    WhiteList->Add(Item);
+    MinFP->Delete(Item);
+    MinTP->Add(Item);
     for (int i = 0; i < d3; i++) {
       int f = ties(Item, i);
       if (f > Item) {
         MainArrayL[f]++;
-        WhiteList->Delete(f);
+        MinTP->Delete(f);
       } else {
         MainArrayU[f]--;
         if (MainArrayU[f] == 0) {
-          BlackList->Add(f);
+          MinFP->Add(f);
         }
       };
     }
   } else {
-    BlackList->Add(Item);
-    WhiteList->Delete(Item);
+    MinFP->Add(Item);
+    MinTP->Delete(Item);
     for (int i = 0; i < d3; i++) {
       int f = ties(Item, i);
       if (f > Item) {
         MainArrayL[f]--;
         if (MainArrayL[f] == 0) {
-          WhiteList->Add(f);
+          MinTP->Add(f);
         }
       } else {
         MainArrayU[f]++;
-        BlackList->Delete(f);
+        MinFP->Delete(f);
       };
     }
   }
@@ -149,7 +146,6 @@ int mbf16::LevelBottom() {
   return x;
 }
 
-/** Returns the lowest filled level   */
 int mbf16::LevelTop() {
   int x = d3 + 1;
   for (int i = d3; i >= 0; i--) {

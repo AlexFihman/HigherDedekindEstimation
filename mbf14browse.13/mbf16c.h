@@ -39,8 +39,8 @@ class mbf16 {
   int MinVal, MaxVal;
   double p;
 
-  TFastList* WhiteList;
-  TFastList* BlackList;
+  TFastList* MinTP; //minimal true point
+  TFastList* MinFP;
 
   mbf16();
   ~mbf16();

@@ -10,6 +10,11 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
+  if (argc < 4) {
+    cerr << "Usage: " << argv[0] << " <iterations> <MinVal> <MaxVal>\n";
+    return 1;
+  }
+
   double t1, t2;
   sfmt_init();
   int64_t iter = std::strtoull(argv[1], nullptr, 10);
